@@ -3,10 +3,12 @@ import Data.Array
 import qualified Data.Map as Map
 
 main :: IO ()
-main = run f2 >>= print
+main = run file2 >>= print
 
-f1 =  "../mother_of_all_warehouses.in"
-f2 = "../busy_day.in"
+file1, file2 :: String
+file1 =  "../mother_of_all_warehouses.in"
+file2 = "../busy_day.in"
+
 -- run :: IO (Params, Int, [Int])
 run filename =
   do f <- lines <$> readFile filename
@@ -33,7 +35,6 @@ mkOrder [coord', numItems', ptypes] =
       stock = read <$> words ptypes :: [Int]
   in
     Order (x, y) numItems stock
-
 mkOrder _ = error "Bork! Expected thre length list"
 
 data Order = Order

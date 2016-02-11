@@ -1,7 +1,8 @@
 def load(filename):
     inputFile = open(filename)
     header = readHeader(inputFile.readline())
-    weight = readWeight(inputFile)
+    weights = readWeight(inputFile)
+    
 
 def readHeader(line):
     """The first section of the file describes the ​
@@ -28,7 +29,13 @@ def readWeight(inputFile):
     """
     Read the weight section of the file
     """
-    return {}
+    numberOfProducts = int(inputFile.readline())
+    productLine = inputFile.readLine()
+    products = productLine.split(' ')
+    weights = []
+    for i in range(0, len(products)):
+        weights.append(int(products[i]))
+    return weights
 
 
 

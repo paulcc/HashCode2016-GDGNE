@@ -11,12 +11,12 @@ def readWarehouse(inputFile):
 		x = int(warehouseCoords[0])
 		y = int(warehouseCoords[1])
 		warehouses[w] = (x, y)
-		
+	
 		productLine = inputFile.readLine()
 		products = productLine.split(' ')
-	    productsStored = []
+		productsStored = []
 		for i in range(0, len(products)):
 			productsStored.append(int(products[i]))
-		
+	
 		warehouseProducts[w] = (productsStored)
 		return warehouses, warehouseProducts

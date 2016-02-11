@@ -15,17 +15,30 @@ run =
          numProdTypes = read numprodtypes' :: Int
          weights = read <$> words weights' :: [Int] -- assert lenght w == numP
          numWares = read numWares' :: Int
-         wares' = chunksOf 2 $ take (2*numWares) f1
-         wares = map mkWare wares' :: [Warehouse]
-     {- <$>
+         (wares', f2) = splitAt (2*numWares) f1
+         wares = map mkWare $ chunksOf 2 wares' :: [Warehouse]
+         (numOrders':f3) = f2
+         numOrders = read numOrders' :: Int
+         (orders', f4) = splitAt (3*numOrders) f3
+         orders = map mkOrder $ chunksOf 3 orders' :: [Order]
 
-## ware hoisees and avail of prods
+     return (params, numProdTypes, weights, wares, orders)
 
-- W numWares <10,000
-2- per warehouses
+mkOrder :: [String] -> Order
+mkOrder [coord', numItems', ptypes] =
+  let [x, y] = read <$> words coord' :: [Int]
+      numItems = read numItems' :: Int
+      stock = read <$> words ptypes :: [Int]
+  in
+    Order (x, y) numItems stock
 
-  -}
-     return (params, numProdTypes, weights, wares)
+mkOrder _ = error "Bork! Expected thre length list"
+
+data Order = Order
+  { ordCoords :: (Int, Int)
+  , ordNumItems :: Int
+  , ordProdTypes :: [Int]
+  } deriving (Show)
 
 mkWare :: [String] -> Warehouse
 mkWare [coord', prodFoo'] =

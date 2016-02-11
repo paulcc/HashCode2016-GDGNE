@@ -1,4 +1,9 @@
 def load(filename):
+    inputFile = open(filename)
+    header = readHeader(inputFile.readline())
+    weight = readWeight(inputFile)
+
+def readHeader(line):
     """The first section of the file describes the ​
      parameters of the simulation​
       . This section contains a single line 
@@ -10,10 +15,7 @@ def load(filename):
        ○ deadline of the simulation (1 ≤ deadline of the simulation ≤ 1000000)  
        ○ maximum load of a drone (1 ≤ maximum load of a drone ≤ 10000)  
        """
-    inputFile = open(filename)
-
-
-def readHeader(line):
+    
     line = line.split(' ')
     vals = {"rows": int(line[0]),
             "columns": int(line[1]),
@@ -21,6 +23,13 @@ def readHeader(line):
             "deadline": int(line[3]),
             "maxLoad": int(line[4])}
     return vals
+
+def readWeight(inputFile):
+    """
+    Read the weight section of the file
+    """
+    return {}
+
 
 
 

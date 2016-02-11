@@ -10,6 +10,9 @@ class Drone:
         self.coordY = coordY
         self.action=False
         self.products={}
+        self.targetX = coordX
+        self.targetY = coordY
+
 
     def load(self, warX, warY, productType, productCount):
         """
@@ -26,6 +29,11 @@ class Drone:
         """
         Tell the drone to go to the destination (dstX, dstY) and 
         """
+        if self.action==False:
+            self.action=True
+            self.targetX=dstX
+            self.targetY=dstY
+
 
     def execute(self):
         """
@@ -41,11 +49,17 @@ class Drone:
                 directionY = distanceY/abs(distanceY)
                 self.coordY+=directionY
             else:
-                except Exception("This condition should not happen")
+                raise Exception("This condition should not happen")
             matchesX = self.coordX == self.targetX
             matchesY = self.coordY == self.targetY
             if (matchesX and matchesY):
                 # Reached destination
                 self.action=False
+
+    def coord(self):
+        return (self.coordX, self.coordY)
+
+    def target(self):
+        return (self.targetX, self.targetY)
 
 

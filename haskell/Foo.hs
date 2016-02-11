@@ -3,11 +3,13 @@ import Data.Array
 import qualified Data.Map as Map
 
 main :: IO ()
-main = run >>= print
+main = run f2 >>= print
 
+f1 =  "../mother_of_all_warehouses.in"
+f2 = "../busy_day.in"
 -- run :: IO (Params, Int, [Int])
-run =
-  do f <- lines <$> readFile "../mother_of_all_warehouses.in"
+run filename =
+  do f <- lines <$> readFile filename
      let
          (params':numprodtypes':weights':numWares':f1) = f
          [a,b,c,d,e] = read <$> words params' :: [Int]

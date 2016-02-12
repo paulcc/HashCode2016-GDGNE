@@ -20,37 +20,41 @@ run filename =
          weights = read <$> words weights' :: [Int] -- assert lenght w == numP
          numWares = read numWares' :: Int
          (wares', f2) = splitAt (2*numWares) f1
-         wares = map mkWare $ chunksOf 2 wares' :: [Warehouse]
+         wares = map parseWare $ chunksOf 2 wares' :: [Warehouse]
          (numOrders':f3) = f2
          numOrders = read numOrders' :: Int
          (orders', f4) = splitAt (3*numOrders) f3
-         orders = map mkOrder $ chunksOf 3 orders' :: [Order]
+         orders = map parseOrder $ chunksOf 3 orders' :: [Order]
+
+         -- max' (x, y) (p, q) = (max x p, max y q)
+         -- largest (x, y) = foldr1 max' $ map (snd . ordCoords) ords
+         -- (395, 577) in file2 and (237,395) in file1
 
      return (params, numProdTypes, weights, wares, orders)
 
-mkOrder :: [String] -> Order
-mkOrder [coord', numItems', ptypes] =
+parseOrder :: [String] -> Order
+parseOrder [coord', numItems', ptypes] =
   let [x, y] = read <$> words coord' :: [Int]
       numItems = read numItems' :: Int
       stock = read <$> words ptypes :: [Int]
   in
     Order (x, y) numItems stock
-mkOrder _ = error "Bork! Expected thre length list"
+parseOrder _ = error "Bork! Expected thre length list"
+
+parseWare :: [String] -> Warehouse
+parseWare [coord', prodFoo'] =
+  let [x, y] = read <$> words coord' :: [Int]
+      prodFoo = read <$> words prodFoo' :: [Int]
+      stock = Map.fromAscList $ zip [0..] prodFoo
+  in
+    Warehouse 99 (x, y) stock
+parseWare _ = error "Bork! Expected two length list"
 
 data Order = Order
   { ordCoords :: (Int, Int)
   , ordNumItems :: Int
   , ordProdTypes :: [Int]
   } deriving (Show)
-
-mkWare :: [String] -> Warehouse
-mkWare [coord', prodFoo'] =
-  let [x, y] = read <$> words coord' :: [Int]
-      prodFoo = read <$> words prodFoo' :: [Int]
-      stock = Map.fromAscList $ zip [0..] prodFoo
-  in
-    Warehouse 99 (x, y) stock
-mkWare _ = error "Bork! Expected two length list"
 
 data Params = Params
   { numRows :: Int -- 1 to 10,000
